@@ -29,28 +29,43 @@
         <div id="city-buttons"></div>
       </div>
       <div class="col-8">
-        <div id="weather-display" class="row"></div>
-        <div id="5-day" class="row"></div>
+        <div class="row">
+        <div id="weather-display" class="col-12"></div>
+        </div>
+        <div id="5-day" class="col-12">
+          <div class="row">
+            <h3>5-Day Forecast:</h3>
+          </div>
+          <div class="row justify-content-between">
+            <div id="day1" class="col-2 days" style="background-color: #0d9eff;"></div>
+            <div id="day2" class="col-2 days" style="background-color: #0d9eff;"></div>
+            <div id="day3" class="col-2 days" style="background-color: #0d9eff;"></div>
+            <div id="day4" class="col-2 days" style="background-color: #0d9eff;"></div>
+            <div id="day5" class="col-2 days" style="background-color: #0d9eff;"></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script type="text/javascript">
 
+  function currentForecast() {
+    // remove city later
     var city = "New York";
     var APIKey = "7ff4fac8412c6ce7372c92b66cbd04a6";
     var queryURL = "https://api.openweathermap.org/data/2.5/weather?q="+city+"&appid="+APIKey+"&units=imperial";
-
-
     var date = moment().format("dddd MMM Do YY");
     var heading = $("<h3>").text(city+"("+date+")");
-
     $("#weather-display").append(heading);
     $.ajax({
       url: queryURL,
       method: "GET"
     }).then(function(response) {
       console.log(response);
+      var lat = response.coord.lat;
+      var lon = response.coord.lon;
+      var UVqueryURL = "http://api.openweathermap.org/data/2.5/uvi?appid="+APIKey+"&lat="+lat+"&lon="+lon;
       var temperature = response.main.temp;
       var tempP = $("<p>").text("Temperature: "+temperature);
       $("#weather-display").append(tempP);
@@ -60,12 +75,39 @@
       var windspeed = response.wind.speed;
       var windP = $("<p>").text("Humidity: "+windspeed);
       $("#weather-display").append(windP);
-      var uvIndex;
-      var uvP = $("<p>").text("UV Index: ");
-      $("#weather-display").append(uvP);
+        $.ajax({
+        url: UVqueryURL,
+        method: "GET"
+    })  .then(function(response) {
+        var uvIndex = response.value;
+        var uvP = $("<p>").text("UV Index: "+uvIndex);
+        $("#weather-display").append(uvP);
+      })
     })
+  }
 
+  function fiveDayForecast() {
+    // remove city var later
+    var city = "New York";
+    var APIKey = "7ff4fac8412c6ce7372c92b66cbd04a6";
+    var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q="+city+"&appid="+APIKey+"&units=imperial";
+    $.ajax({
+      url: queryURL,
+      method: "GET"
+    }).then(function(response) {
+      console.log(response);
+      var temp = response.list[8].main.temp;
+      $("#day1").append(temp);
+      var humidity;
+    })
+  }
 
+  function displayWeather() {
+    fiveDayForecast();
+    currentForecast();
+  }
+
+  displayWeather()
   </script>
 </body>
 </html>
