@@ -73,7 +73,7 @@
       var humP = $("<p>").text("Humidity: "+humidity);
       $("#weather-display").append(humP);
       var windspeed = response.wind.speed;
-      var windP = $("<p>").text("Humidity: "+windspeed);
+      var windP = $("<p>").text("Wind: "+windspeed);
       $("#weather-display").append(windP);
         $.ajax({
         url: UVqueryURL,
@@ -96,9 +96,36 @@
       method: "GET"
     }).then(function(response) {
       console.log(response);
-      var temp = response.list[8].main.temp;
-      $("#day1").append(temp);
-      var humidity;
+      var temp1 = response.list[8].main.temp;
+      var humidity1= response.list[8].main.humidity;
+      var pressure1= response.list[8].main.pressure;
+      $("#day1").append("Temp: "+temp1);
+      $("#day1").append("Humidity: "+humidity1);
+      $("#day1").append("Pressure: "+pressure1);
+      var temp2 = response.list[16].main.temp;
+      var humidity2= response.list[16].main.humidity;
+      var pressure2= response.list[16].main.pressure;
+      $("#day2").append("Temp: "+temp2);
+      $("#day2").append("Humidity: "+humidity2);
+      $("#day2").append("Pressure: "+pressure2);
+      var temp3 = response.list[24].main.temp;
+      var humidity3= response.list[24].main.humidity;
+      var pressure3= response.list[24].main.pressure;
+      $("#day3").append("Temp: "+temp3);
+      $("#day3").append("Humidity: "+humidity3);
+      $("#day3").append("Pressure: "+pressure3);
+      var temp4 = response.list[32].main.temp;
+      var humidity4= response.list[32].main.humidity;
+      var pressure4= response.list[32].main.pressure;
+      $("#day4").append("Temp: "+temp4);
+      $("#day4").append("Humidity: "+humidity4);
+      $("#day4").append("Pressure: "+pressure4);
+      var temp5 = response.list[40].main.temp;
+      var humidity5= response.list[40].main.humidity;
+      var pressure5= response.list[40].main.pressure;
+      $("#day5").append("Temp: "+temp5);
+      $("#day5").append("Humidity: "+humidity5);
+      $("#day5").append("Pressure: "+pressure5);
     })
   }
 
